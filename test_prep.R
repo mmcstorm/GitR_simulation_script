@@ -10,7 +10,7 @@ nobs <- 50
 ncat <- 2
 nvarp <- 6
 nvar <- 12
-
+# Adding a comment
 
 lavaan.data.syn1 <- function(fact=1, nitems=6) {
   TXT <- ""
