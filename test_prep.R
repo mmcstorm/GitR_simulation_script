@@ -10,3 +10,17 @@ nobs <- 50
 ncat <- 2
 nvarp <- 6
 nvar <- 12
+
+
+lavaan.data.syn1 <- function(fact=1, nitems=6) {
+  TXT <- ""
+  for(k in 1:fact) {
+    if(k==1){J <- paste0("F", k, " =~ ",
+                         paste0("X", (k-1)*nitems + 1:nitems, collapse=" + "))}
+    
+    if(k>1){J <- rbind (J, K <- paste0("F", k, " =~ ",
+                                       paste0("X", (k-1)*nitems + 1:nitems, collapse=" + ")))}
+    TXT <- J
+  }
+  TXT
+}
