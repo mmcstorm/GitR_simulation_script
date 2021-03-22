@@ -17,7 +17,17 @@ Replication <- 1
 factors <- c(2,4)
 nobs <- c(50,100)
 ncat <- c(2,4)
-Design_try <- expand.grid(factors = factors, nobs = nobs, ncat = ncat)
+Design_small <- expand.grid(factors = factors, nobs = nobs, ncat = ncat)
+
+############################# Official design matrix #############################
+#factors <- c(4,6,8) 					          	   #number of latent variables
+#nobs <- c(200,400,800)                      #sample size
+#ncat <- c(2,4)                              #number of categories
+
+##Create the simulation design matrix (full factorial)
+# Design is a data.frame with all possible combinations of the factor levels
+# Each row of the design matrix represents a cell of your simulation design
+# Design <- expand.grid(factors = factors, nobs = nobs, ncat = ncat)
 
 # initial values
 n.replications <- 3
@@ -122,6 +132,7 @@ Method_old_CS <- function(SimData, fact){
                  estimator="WLSMV")
   return(summary(fit1_W, fit.measures = TRUE))
 }
+
 # function for the missepcified model 
 Method_old_MS <- function(SimData, fact){
   fit2_W <- cfa( model <- lavaan.data.syn2(fact), 
@@ -132,7 +143,7 @@ Method_old_MS <- function(SimData, fact){
 }
 
 ############################ PML method (new) ############################
-# function for the correctly sepcified model 
+# function for the correctly specified model 
 Method_new_CS <- function(SimData, fact){
   fit1_P <- cfa( model <- lavaan.data.syn1(fact), 
                  data=SimData, std.lv=TRUE, 
@@ -152,23 +163,22 @@ Method_new_CS <- function(SimData, fact){
 
 
 # Generate data
-SimData <- do.call(MyDataGeneration, Design_try[RowOfDesign, ] ) 
+SimData <- do.call(MyDataGeneration, Design_small[RowOfDesign, ] )
 
 ## COMPARE TWO METHODS
 tmp <- proc.time()
-MyAnalysisResult_WLS1 <- Method_old_CS(SimData, fact = 2)
-MyAnalysisResult_WLS2 <- Method_old_MS(SimData, fact = 2)
-MyAnalysisResult_PML1 <- Method_new_CS(SimData, fact = 2)
-MyAnalysisResult_PML2 <- Method_new_MS(SimData, fact = 2)
+MyAnalysisResult_WLS1 <- Method_old_CS(SimData, fact = Design_small[RowOfDesign,1])
+MyAnalysisResult_WLS2 <- Method_old_MS(SimData, fact = Design_small[RowOfDesign,1])
+MyAnalysisResult_PML1 <- Method_new_CS(SimData, fact = Design_small[RowOfDesign,1])
+MyAnalysisResult_PML2 <- Method_new_MS(SimData, fact = Design_small[RowOfDesign,1])
 
 time <- proc.time() - tmp
 
 # Save all chi square statistics
-MyAnalysisResult <- rbind(WLS_CS= MyAnalysisResult_WLS1$FIT[3], 
-                          WLS_MS = MyAnalysisResult_WLS1$FIT[3], 
+MyAnalysisResult <- rbind(WLS_CS=  MyAnalysisResult_WLS1$FIT[3], 
+                          WLS_MS = MyAnalysisResult_WLS2$FIT[3], 
                           PML_CS = MyAnalysisResult_PML1$FIT[3], 
                           WLS_MS = MyAnalysisResult_PML2$FIT[3])
-
 
 save(SimData, file = paste("Simdata","Row", 
                           RowOfDesign, "Rep", 
@@ -182,3 +192,74 @@ save(time, file = paste("Time", "Row",
                        RowOfDesign, "Rep", 
                        Replication ,".Rdata" , 
                        sep =""))
+
+################################ Simulation start (1 cell) ##########################
+MySimulationCell<- function(Design = Design_small, RowOfDesign = 2, K = 2){
+  # Input arguments:
+  # Design = designmatrix
+  # RowOfDesign: number that refers to the row of the design matrix = one cell
+  # K: Total number of replications = number of data sets generated in one cell
+  # Create matrix or dataframe to store the results:
+  MyResult <- matrix(NA, nrow = K, ncol = 4)
+  #create a loop over the replications k = 1 to K:
+  tmp <- proc.time()
+  for (k in 1:K){
+    # Generate data
+    # set a random number seed to be able to replicate the result exactly
+    set.seed((k + 1000)*RowOfDesign)
+    SimDat <- do.call(MyDataGeneration, Design_small[RowOfDesign,] )
+
+    # Analyze data set with Method_new
+    MyAnalysisResult_WLS1 <- Method_old_CS(SimDat, fact = Design_small[RowOfDesign,1])
+    MyAnalysisResult_WLS2 <- Method_old_MS(SimDat, fact = Design_small[RowOfDesign,1])
+    MyAnalysisResult_PML1 <- Method_new_CS(SimDat, fact = Design_small[RowOfDesign,1])
+    MyAnalysisResult_PML2 <- Method_new_MS(SimDat, fact = Design_small[RowOfDesign,1])
+    
+    MyAnalysisResult <- cbind(WLS_CS =  MyAnalysisResult_WLS1$FIT[3], 
+                              WLS_MS = MyAnalysisResult_WLS2$FIT[3], 
+                              PML_CS = MyAnalysisResult_PML1$FIT[3], 
+                              WLS_MS = MyAnalysisResult_PML2$FIT[3])
+    #Evaluate the analysis results of Method_new (Result1) and Mehtod_old (Result2)
+    #MyResult1 <- MyEvaluationPC(MyAnalysisResult1)
+    #MyResult2 <- MyEvaluationPC(MyAnalysisResult2)
+    #store the results in the right row k of your result matrix:
+    #We only store the second result which is the evaluation criterion
+    MyResult[k, ] <- MyAnalysisResult
+    #colnames(MyResult) <- colnames(MyAnalysisResult)
+    #rownames(MyResult) <- rownames(MyAnalysisResult)
+  }
+  #save the time to run the analyses of K data sets in one cell of the design.
+  time <- proc.time() - tmp
+  return(MyResult)
+}
+
+# collect data
+#Row <- 1
+#MyResult <- MySimulationCell(Design_small, RowOfDesign = 2, K = 2)
+
+MySimulationCell(Design = Design_small, RowOfDesign = 1, K = 1)
+#MySimulationCell(Design = Design_small, RowOfDesign = 2, K = 2)
+
+# ERROR: The variance-covariance matrix of the estimated parameters (vcov)
+#does not appear to be positive definite! The smallest eigenvalue
+#(= -2.928099e-17) is smaller than zero. This may be a symptom that
+#the model is not identified.
+
+
+# Write output of one cell of the design
+#save(MyResult, file =paste("MyResult", "Row", Row,".Rdata" , sep =""))
+#optional to save timing of analyses of K replications in 1 cell
+#save(time, file =paste("Time", "Row", Row, ".Rdata" , sep =""))
+
+
+################################ Simulation all cells  ###############################
+TotalCells <- nrow(Design_small)
+for (i in 1:TotalCells){
+  Row <- i
+  MyResult <- MySimulationCell(Design = Design_small, RowOfDesign = Row, K = 5 ) #10!
+  Simdat <- MySimulationCell(Design = Design_small, RowOfDesign = Row, K = 5 )
+  # Write output of one cell of the design
+  save(MyResult, file =paste("MyResult", "Row", Row,".Rdata" , sep =""))
+  save(Simdat, file =paste("MyResult", "Row", Row,".Rdata" , sep =""))
+}
+warnings()
