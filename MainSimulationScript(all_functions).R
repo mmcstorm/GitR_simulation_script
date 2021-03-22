@@ -130,7 +130,12 @@ Method_old_CS <- function(SimData, fact){
                  data=SimData, std.lv=TRUE, 
                  ordered=c(colnames(SimData)),
                  estimator="WLSMV")
-  return(summary(fit1_W, fit.measures = TRUE))
+  return(summary(fit1_W, fit.measures = TRUE, nd = 8))
+  parTable(fit1_W)
+  # parTable niet te laten afronden -> est & se
+  fit1_W@ParTable
+  # se & est & thresholds
+  ##### free parameters#####
 }
 
 # function for the missepcified model 
@@ -201,6 +206,10 @@ MySimulationCell<- function(Design = Design_small, RowOfDesign = 2, K = 2){
   # K: Total number of replications = number of data sets generated in one cell
   # Create matrix or dataframe to store the results:
   MyResult <- matrix(NA, nrow = K, ncol = 4)
+ 
+  ### Fit indices
+  ### Parameter estimates
+  
   #create a loop over the replications k = 1 to K:
   tmp <- proc.time()
   for (k in 1:K){
@@ -215,7 +224,7 @@ MySimulationCell<- function(Design = Design_small, RowOfDesign = 2, K = 2){
     MyAnalysisResult_PML1 <- Method_new_CS(SimDat, fact = Design_small[RowOfDesign,1])
     MyAnalysisResult_PML2 <- Method_new_MS(SimDat, fact = Design_small[RowOfDesign,1])
     
-    MyAnalysisResult <- cbind(WLS_CS =  MyAnalysisResult_WLS1$FIT[3], 
+    MyAnalysisResult <- cbind(WLS_CS = MyAnalysisResult_WLS1$FIT[3], 
                               WLS_MS = MyAnalysisResult_WLS2$FIT[3], 
                               PML_CS = MyAnalysisResult_PML1$FIT[3], 
                               WLS_MS = MyAnalysisResult_PML2$FIT[3])
@@ -235,9 +244,11 @@ MySimulationCell<- function(Design = Design_small, RowOfDesign = 2, K = 2){
 
 # collect data
 #Row <- 1
-#MyResult <- MySimulationCell(Design_small, RowOfDesign = 2, K = 2)
+MyResult_onecell <- MySimulationCell(Design_small, RowOfDesign = 2, K = 50)
+colnames(MyResult_onecell) <- c('WLS_Correct', 'WLS_Misspec', 'PML_Correct', 'PML_Misspec')
 
-MySimulationCell(Design = Design_small, RowOfDesign = 1, K = 1)
+plot
+#MySimulationCell(Design = Design_small, RowOfDesign = 1, K = 1)
 #MySimulationCell(Design = Design_small, RowOfDesign = 2, K = 2)
 
 # ERROR: The variance-covariance matrix of the estimated parameters (vcov)
@@ -257,9 +268,9 @@ TotalCells <- nrow(Design_small)
 for (i in 1:TotalCells){
   Row <- i
   MyResult <- MySimulationCell(Design = Design_small, RowOfDesign = Row, K = 5 ) #10!
-  Simdat <- MySimulationCell(Design = Design_small, RowOfDesign = Row, K = 5 )
   # Write output of one cell of the design
   save(MyResult, file =paste("MyResult", "Row", Row,".Rdata" , sep =""))
-  save(Simdat, file =paste("MyResult", "Row", Row,".Rdata" , sep =""))
+  ##write.csv(MyResult, file =paste("MyResult", "Row", Row,".csv" , sep =""))
 }
 warnings()
+?write.csv
