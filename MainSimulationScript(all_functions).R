@@ -4,7 +4,7 @@
 library(lavaan)
 library(usethis)
 
-args <- commandArgs(TRUE) #?
+args <- commandArgs(TRUE) #Je moet dit doen
 args <- as.numeric(args)
 
 RowOfDesign <- args[1]
