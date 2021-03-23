@@ -1,5 +1,5 @@
 # MainSimulationScriptSLURM (following the code of the manual)
-args <- commandArgs(TRUE) #SLURM taal
+args <- commandArgs(TRUE) #SLURM command
 args <- as.numeric(args)
 
 RowOfDesign <- args[1]
@@ -9,7 +9,7 @@ RowOfDesign <- 24
 Replication <- 1
 
 ############################# Simulation Design  #############################
-factors <- c(2,4,6,8) 					           #number of latent variables
+factors <- c(2,4,6,8) 					            #number of latent variables
 nobs <- c(200,400,800)                      #sample size
 ncat <- c(2,4)                              #number of categories
 
