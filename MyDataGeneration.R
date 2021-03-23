@@ -1,5 +1,6 @@
 ############################ Data generating function ############################
-MyDataGeneration <- function(factors, nobs, ncat) {
+
+MyDataGeneration <- function(factors, nobs, ncat, nvarp = 6) {
   
   # model specifications
   nvar <- factors*nvarp
