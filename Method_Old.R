@@ -28,11 +28,11 @@ lavaan.data.syn2 <- function(fact=1, nitems=6) {
 }
 # function for the correctly specified model 
 Method_old_CS <- function(SimData, fact){
-  fit1_W <- cfa( model <- lavaan.data.syn1(fact), 
+  fit1_W <- lavaan:::cfa( model <- lavaan.data.syn1(fact), 
                  data=SimData, std.lv=TRUE, 
                  ordered=c(colnames(SimData)),
                  estimator="WLSMV")
-  return(summary(fit1_W, fit.measures = TRUE, nd = 8))
+  return(fit1_W)
 }
 
 # function for the missepcified model 
@@ -41,5 +41,5 @@ Method_old_MS <- function(SimData, fact){
                  data=SimData, std.lv=TRUE, 
                  ordered=c(colnames(SimData)),
                  estimator="WLSMV") 
-  return(summary(fit2_W, fit.measures = TRUE))
+  return(fit2_W)
 }
