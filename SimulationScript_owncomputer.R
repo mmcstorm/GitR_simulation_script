@@ -4,11 +4,11 @@
 library(lavaan)
 library(usethis)
 
-args <- commandArgs(TRUE) # SLURM language
-args <- as.numeric(args)
+#args <- commandArgs(TRUE) # SLURM language
+#args <- as.numeric(args)
 
-RowOfDesign <- args[1]
-Replication <- args[2]
+#RowOfDesign <- args[1]
+#Replication <- args[2]
 
 RowOfDesign <- 1 #24
 Replication <- 1
@@ -27,8 +27,8 @@ Design <- expand.grid(factors = factors, nobs = nobs, ncat = ncat)
 
 # prepared functions
 source("MyDataGeneration.R")
-source("Method_new.R")
-source("Method_old.R")
+source("Method_New.R")
+source("Method_Old.R")
 source("ColnamesGenerators.R")
 
 ################################ Simulation start (1 cell) ##########################
@@ -55,15 +55,22 @@ MySimulationCell<- function(Design = Design, RowOfDesign = 1, K = 2){
 
     ## WLS correctly specified model
     fit1_W <- Method_old_CS(SimDat, fact = Design[RowOfDesign,1])
-    
+
     # parameter estimates
     index <- which(fit1_W@ParTable$free != 0)
     MyAnalysisResult_WLS1est <- fit1_W@ParTable$est[index]
-    names(MyAnalysisResult_WLS1est) <- ColnamesGeneratorEst("WLS", "CS", fact)
-    
+    names(MyAnalysisResult_WLS1est) <- ColnamesGeneratorEst("WLS", 
+                                                            "CS", 
+                                                            fact, 
+                                                            Design[RowOfDesign,3])
+
+    Design
     # standard errors 
     MyAnalysisResult_WLS1err <- fit1_W@ParTable$se[index]
-    names(MyAnalysisResult_WLS1err) <- ColnamesGeneratorSE("WLS", "CS", fact)
+    names(MyAnalysisResult_WLS1err) <- ColnamesGeneratorSE("WLS", 
+                                                           "CS", 
+                                                           fact, 
+                                                           Design[RowOfDesign,3])
     
     ### FITINDICES
     FI_WLS_CS <- fitMeasures(fit1_W, c("chisq.scaled","df.scaled", 
@@ -77,11 +84,17 @@ MySimulationCell<- function(Design = Design, RowOfDesign = 1, K = 2){
     # parameter estimates 
     index <- which(fit2_W@ParTable$free != 0)
     MyAnalysisResult_WLS2est <- fit2_W@ParTable$est[index]
-    names(MyAnalysisResult_WLS2est) <- ColnamesGeneratorEst("WLS", "MS", fact)
-    
+    names(MyAnalysisResult_WLS2est) <- ColnamesGeneratorEst("WLS", 
+                                                            "MS", 
+                                                            fact,
+                                                            Design[RowOfDesign,3])
+
     # standard errors
     MyAnalysisResult_WLS2err <- fit2_W@ParTable$se[index]
-    names(MyAnalysisResult_WLS2err) <- ColnamesGeneratorSE("WLS", "MS", fact)
+    names(MyAnalysisResult_WLS2err) <- ColnamesGeneratorSE("WLS", 
+                                                           "MS", 
+                                                           fact, 
+                                                           Design[RowOfDesign,3])
     
     ### FITINDICES
     FI_WLS_MS <-fitMeasures(fit2_W, c("chisq.scaled","df.scaled", 
@@ -95,11 +108,17 @@ MySimulationCell<- function(Design = Design, RowOfDesign = 1, K = 2){
     # parameter estimates
     index <- which(fit1_P@ParTable$free != 0)
     MyAnalysisResult_PML1est <- fit1_P@ParTable$est[index]
-    names(MyAnalysisResult_PML1est) <- ColnamesGeneratorEst("PML", "CS", fact)
+    names(MyAnalysisResult_PML1est) <- ColnamesGeneratorEst("PML", 
+                                                            "CS", 
+                                                            fact, 
+                                                            Design[RowOfDesign,3])
     
     # standard errors
     MyAnalysisResult_PML1err <- fit1_P@ParTable$se[index]
-    names(MyAnalysisResult_PML1err) <- ColnamesGeneratorSE("PML", "CS", fact)
+    names(MyAnalysisResult_PML1err) <- ColnamesGeneratorSE("PML", 
+                                                           "CS", 
+                                                           fact, 
+                                                           Design[RowOfDesign,3])
     
     ### FITINDICES
     FI_PML_CS <- fitMeasures(fit1_P, 
@@ -114,11 +133,17 @@ MySimulationCell<- function(Design = Design, RowOfDesign = 1, K = 2){
     # parameter estimates
     index <- which(fit2_P@ParTable$free != 0)
     MyAnalysisResult_PML2est <- fit2_P@ParTable$est[index]
-    names(MyAnalysisResult_PML2est) <- ColnamesGeneratorEst("PML", "MS", fact)
+    names(MyAnalysisResult_PML2est) <- ColnamesGeneratorEst("PML", 
+                                                            "MS", 
+                                                            fact, 
+                                                            Design[RowOfDesign,3])
     
     # standard errors 
     MyAnalysisResult_PML2err <- fit2_P@ParTable$se[index]
-    names(MyAnalysisResult_PML2err) <- ColnamesGeneratorSE("PML", "MS", fact)
+    names(MyAnalysisResult_PML2err) <- ColnamesGeneratorSE("PML", 
+                                                           "MS", 
+                                                           fact, 
+                                                           Design[RowOfDesign,3])
   
     ### FITINDICES
     FI_PML_MS <- fitMeasures(fit2_P, c("chisq.scaled","df.scaled", 
@@ -146,7 +171,6 @@ MySimulationCell<- function(Design = Design, RowOfDesign = 1, K = 2){
 }
 
 # collect data
-#Row <- 1
 MyResult_onecell <- MySimulationCell(Design, RowOfDesign = 1, K = 1)
 MyResult_onecell
 
@@ -159,7 +183,6 @@ for (i in 1:TotalCells){
   # Write output of one cell of the design
   # Save WLS results
   MyResult1 <- unlist(MyResult[1])
-  matrix1 == MyResult1
   save(MyResult1, 
        file = paste("WLS_CS_est", "Row", Row,".Rdata" , sep = ""))
   
@@ -169,46 +192,46 @@ for (i in 1:TotalCells){
   
   MyResult3 <- unlist(MyResult[3])
   save(MyResult3, 
-       file = paste("WLS_MS_est", "Row", Row,".Rdata" , sep =""))
+       file =paste("FI_WLS_CS", "Row", Row, ".Rdata" , sep =""))
   
   MyResult4 <- unlist(MyResult[4])
   save(MyResult4, 
-       file = paste("WLS_MS_err", "Row", Row,".Rdata" , sep =""))
+       file = paste("WLS_MS_est", "Row", Row,".Rdata" , sep =""))
   
-  # Save PML results
   MyResult5 <- unlist(MyResult[5])
   save(MyResult5, 
-       file = paste("PML_CS_est", "Row", Row,".Rdata" , sep =""))
+       file = paste("WLS_MS_err", "Row", Row,".Rdata" , sep =""))
   
-  MyResult6 <- unlist(MyResult[6])
-  save(MyResult6, 
-       file = paste("PML_CS_err", "Row", Row,".Rdata" , sep =""))
+  MyResults6 <- unlist(MyResult[6])
+  save(MyResults6, 
+       file =paste("FI_WLS_MS", "Row", Row, ".Rdata" , sep =""))
   
+  # Save PML results
   MyResult7 <- unlist(MyResult[7])
   save(MyResult7, 
-       file = paste("PML_MS_est", "Row", Row,".Rdata" , sep =""))
+       file = paste("PML_CS_est", "Row", Row,".Rdata" , sep =""))
   
   MyResult8 <- unlist(MyResult[8])
   save(MyResult8, 
+       file = paste("PML_CS_err", "Row", Row,".Rdata" , sep =""))
+  
+  MyResults9 <- unlist(MyResult[9])
+  save(MyResults9, 
+       file =paste("FI_PML_CS", "Row", Row, ".Rdata" , sep =""))
+  
+  MyResult10 <- unlist(MyResult[10])
+  save(MyResult10, 
+       file = paste("PML_MS_est", "Row", Row,".Rdata" , sep =""))
+  
+  MyResult11 <- unlist(MyResult[11])
+  save(MyResult11, 
        file = paste("PML_MS_err", "Row", Row,".Rdata" , sep =""))
 
-  # Save time 
-  save(time, file =paste("Time", "Row", Row, ".Rdata" , sep =""))
-
-  # Save Fit indices
-  MyResult9 <- unlist(matrixf1)
-save(MyResult9, 
-     file =paste("FI_WLS_CS", "Row", Row, ".Rdata" , sep =""))
-
-  MyResults10 <- unlist(matrixf2)
-  save(MyResults10, 
-     file =paste("FI_WLS_MS", "Row", Row, ".Rdata" , sep =""))
-  
-  MyResults11 <- unlist(matrixf3)
-save(MyResults11, 
-     file =paste("FI_PML_CS", "Row", Row, ".Rdata" , sep =""))
-  
-  MyResults12 <- unlist(matrixf4)
-save(MyResults12, 
+  MyResults12 <- unlist(MyResult[12])
+  save(MyResults12, 
      file =paste("FI_PML_MS", "Row", Row, ".Rdata" , sep =""))
+
+# Save time 
+  MyResults13 <- unlist(MyResult[13])
+  save(MyResults13, file =paste("Time", "Row", Row, ".Rdata" , sep =""))
 }
