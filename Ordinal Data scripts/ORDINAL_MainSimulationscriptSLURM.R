@@ -10,9 +10,6 @@ nobs <- c(200,400,800)                      #sample size
 ncat <- c(2,4)                              #number of categories
 
 ##Create the simulation design matrix (full factorial)
-# Design is a data.frame with all possible combinations of the factor levels
-# Each row of the design matrix represents a cell of your simulation design
-# Design <- expand.grid(factors = factors, nobs = nobs, ncat = ncat)
 
 Design <- expand.grid(factors = factors, nobs = nobs, ncat = ncat)
 
@@ -33,7 +30,6 @@ source("ORDINAL_all_functions_script.R")
   fact <- Design[RowOfDesign,1]
   nvar <- nvarp*fact
 
-  
   input<- cbind(seq(1,550), rep(0,550))
   mis500<- as.matrix(input)
   
@@ -43,14 +39,6 @@ source("ORDINAL_all_functions_script.R")
     SimDat <- do.call(MyDataGeneration, Design[RowOfDesign,] )
 
   ####### WLS model without specified cross-loadings ########
-    MyResult_WLS_withoutC_est <- matrix(NA, 
-                                  nrow = Replication, 
-                                  ncol = length(ColnamesGeneratorEst("WLS",
-                                                                     "withoutC", 
-                                                                     fact,
-                                                                     Design[RowOfDesign,3])))
-    colnames(MyResult_WLS_withoutC_est) <- ColnamesGeneratorEst("WLS","withoutC",fact,Design[RowOfDesign,3])
-    
     fit1_W <- try(cfa( model <- model_withoutC(fact), 
                        data=SimDat, std.lv=TRUE, 
                        ordered=c(colnames(SimDat)),
@@ -70,7 +58,6 @@ source("ORDINAL_all_functions_script.R")
       colnames(MyResult_WLS_withoutC_est) <- ColnamesGeneratorEst("WLS","withoutC",
                                                             fact,Design[RowOfDesign,3])
       MyResult_WLS_withoutC_est[Replication, ] <- MyAnalysisResult_WLS1est
-      
       
       # standard errors 
       MyAnalysisResult_WLS1err <- fit1_W@ParTable$se[index]
@@ -96,14 +83,6 @@ source("ORDINAL_all_functions_script.R")
     }
     
     ####### WLS model with specified cross-loadings ########
-    MyResult_WLS_withC_est <- matrix(NA, 
-                                  nrow = Replication, 
-                                  ncol = length(ColnamesGeneratorEst("WLS",
-                                                                     "withC", 
-                                                                     fact,
-                                                                     Design[RowOfDesign,3])))
-    colnames(MyResult_WLS_withC_est) <- ColnamesGeneratorEst("WLS","withC",fact,Design[RowOfDesign,3])
-    
     fit2_W <- try(cfa( model <- model_withC(fact), 
                        data=SimDat, std.lv=TRUE, 
                        ordered=c(colnames(SimDat)),
@@ -148,15 +127,7 @@ source("ORDINAL_all_functions_script.R")
       MyResult_WLS_withC_FI[Replication,] <- FI_WLS_withC
     }
     
-    ###### PML model without specified cross-loadings
-    MyResult_PML_withoutC_est <- matrix(NA, 
-                                  nrow = Replication, 
-                                  ncol = length(ColnamesGeneratorEst("PML",
-                                                                     "withoutC", 
-                                                                     fact,
-                                                                     Design[RowOfDesign,3])))
-    colnames(MyResult_PML_withoutC_est) <- ColnamesGeneratorEst("PML","withoutC",fact,Design[RowOfDesign,3])
-    
+    ###### PML model without specified cross-loadings ###### 
     fit1_P <- try(cfa( model <- model_withoutC(fact), 
                        data=SimDat, std.lv=TRUE, 
                        ordered=c(colnames(SimDat)),
@@ -202,16 +173,7 @@ source("ORDINAL_all_functions_script.R")
     }
     
     
-    
-    
     ###### PML model with specified cross-loadings #####
-    MyResult_PML_withC_est <- matrix(NA, 
-                                  nrow = Replication, 
-                                  ncol = length(ColnamesGeneratorEst("PML",
-                                                                     "withC", 
-                                                                     fact,
-                                                                     Design[RowOfDesign,3])))
-    colnames(MyResult_PML_withC_est) <- ColnamesGeneratorEst("PML","withC",fact,Design[RowOfDesign,3])
     fit2_P <- try(cfa( model <- model_withC(fact), 
                        data=SimDat, std.lv=TRUE, 
                        ordered=c(colnames(SimDat)),
@@ -223,13 +185,12 @@ source("ORDINAL_all_functions_script.R")
       index <- which(fit2_P@ParTable$free != 0)
       MyAnalysisResult_PML2est <- fit2_P@ParTable$est[index]
       MyResult_PML_withC_est <- matrix(NA, 
-                                    nrow = Replication, 
-                                    ncol = length(ColnamesGeneratorEst("PML",
-                                                                       "withC", 
-                                                                       fact,
-                                                                       Design[RowOfDesign,3])))
-      colnames(MyResult_PML_withC_est) <- ColnamesGeneratorEst("PML","withC",
-                                                            fact,Design[RowOfDesign,3])
+                                       nrow = Replication, 
+                                       ncol = length(ColnamesGeneratorEst("PML",
+                                                                          "withC", 
+                                                                          fact,
+                                                                          Design[RowOfDesign,3])))
+      colnames(MyResult_PML_withC_est) <- ColnamesGeneratorEst("PML","withC",fact,Design[RowOfDesign,3])
       MyResult_PML_withC_est[Replication, ] <- MyAnalysisResult_PML2est
       
       # standard errors 
@@ -258,7 +219,7 @@ source("ORDINAL_all_functions_script.R")
     
     
  ################################ Simulation all cells  ###############################
-setwd("/exports/fsw/mmcstorm/Analysis")
+setwd("/exports/fsw/mmcstorm/Analysis/ordinal")
   # save the results
     write.csv(MyResult_WLS_withoutC_est, 
               file = paste("WLS_withoutC_est", "Row", RowOfDesign, ".csv" , sep =""))
@@ -309,6 +270,6 @@ setwd("/exports/fsw/mmcstorm/Analysis")
               file = paste("Simulated_Data", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
   
 
-setwd("/exports/fsw/mmcstorm/SimData")
+setwd("/exports/fsw/mmcstorm/SimData/ordinal")
 # create folder data
 save(SimDat, file =paste("Data", "Row", RowOfDesign, "Rep", Replication ,".Rdata" , sep =""))
