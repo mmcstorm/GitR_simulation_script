@@ -265,42 +265,42 @@ for (i in 1:TotalCells){
             file =paste("WLS_FI_withC", "Row", Row, ".csv" , sep =""))
   
   #### PML ####
-  MyResult_PML_withoutC_est <- MyResult[1]
+  MyResult_PML_withoutC_est <- MyResult[7]
   write.csv(MyResult_PML_withoutC_est, 
             file = paste("PML_withoutC_est", "Row", Row,".csv" , sep = ""))
   
-  MyResult_PML_withoutC_err <- MyResult[2]
+  MyResult_PML_withoutC_err <- MyResult[8]
   write.csv(MyResult_PML_withoutC_err,
             file = paste("PML_withoutC_err", "Row", Row,".csv" , sep =""))
   
-  MyResult_PML_withoutC_FI <- MyResult[3]
+  MyResult_PML_withoutC_FI <- MyResult[9]
   write.csv(MyResult_PML_withoutC_FI,
             file =paste("PML_FI_withoutC", "Row", Row, ".csv" , sep =""))
   
   # Model with specified cross-loadings
-  MyResult_PML_withC_est <- MyResult[4]
+  MyResult_PML_withC_est <- MyResult[10]
   write.csv(MyResult_PML_withC_est,
             file = paste("PML_withC_est", "Row", Row,".csv" , sep =""))
   
-  MyResult_PML_withC_err <- MyResult[5]
+  MyResult_PML_withC_err <- MyResult[11]
   write.csv(MyResult_PML_withC_err,
             file = paste("PML_withC_err", "Row", Row,".csv" , sep =""))
   
-  MyResult_PML_withC_FI <- MyResult[6]
+  MyResult_PML_withC_FI <- MyResult[12]
   write.csv(MyResult_PML_withC_FI,
             file =paste("PML_FI_withC", "Row", Row, ".csv" , sep =""))
   
   # Save dataset
-  Simulated_data <- MyResult[7]
+  Simulated_data <- MyResult[13]
   write.csv(Simulated_data, 
             file = paste("Simulated_Data", 'Row', Row, ".csv", sep = ""))
   
   # Save time
-  time <- MyResult[8]
+  time <- MyResult[14]
   save(time, file =paste("Time", "Row", Row, ".Rdata" , sep =""))
   
   # Silent Check
-  mis500 <- MyResult[9]
+  mis500 <- MyResult[15]
   write.csv(mis500, 
             file = paste("mis500", 'Row', Row, ".csv", sep = ""))
 }
