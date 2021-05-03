@@ -54,7 +54,7 @@ source("MIXED_all_functions_script.R")
                                                                            fact)))
     colnames(MyResult_WLS_withoutC_est) <- ColnamesGeneratorEst("WLS", "withoutC", fact)
     names(MyAnalysisResult_WLS_withoutC_est) <- ColnamesGeneratorEst("WLS", "withoutC", fact)
-    MyResult_WLS_withoutC_est[Replication, ] <- MyAnalysisResult_WLS_withoutC_est
+    MyResult_WLS_withoutC_est <- MyAnalysisResult_WLS_withoutC_est
     
     # standard errors
     MyAnalysisResult_WLS_withoutC_err <- fit_WLS_withoutC@ParTable$se[index]
@@ -66,7 +66,7 @@ source("MIXED_all_functions_script.R")
                                                                "withoutC", 
                                                                fact)
     names(MyAnalysisResult_WLS_withoutC_err) <- ColnamesGeneratorSE("WLS", "withoutC", fact)
-    MyResult_WLS_withoutC_err[Replication, ] <- MyAnalysisResult_WLS_withoutC_err
+    MyResult_WLS_withoutC_err <- MyAnalysisResult_WLS_withoutC_err
     
     ### FITINDICES
     MyResult_WLS_withoutC_FI<- matrix(NA, nrow = Replication, ncol = 5)
@@ -77,7 +77,7 @@ source("MIXED_all_functions_script.R")
                                    c("chisq","df", 
                                      "pvalue", "cfi",
                                      "srmr"))
-    MyResult_WLS_withoutC_FI[Replication,] <- FI_WLS_withoutC
+    MyResult_WLS_withoutC_FI <- FI_WLS_withoutC
   }
   
 #### WLS - Model with specified cross-loadings (with silent check) ####
@@ -98,7 +98,7 @@ source("MIXED_all_functions_script.R")
       colnames(MyResult_WLS_withC_est) <- ColnamesGeneratorEst("WLS", "withC", fact)
       MyAnalysisResult_WLS_withC_est <- fit_WLS_withC@ParTable$est[index]
       names(MyAnalysisResult_WLS_withC_est) <- ColnamesGeneratorEst("WLS", "withC", fact)
-      MyResult_WLS_withC_est[Replication, ] <- MyAnalysisResult_WLS_withC_est
+      MyResult_WLS_withC_est <- MyAnalysisResult_WLS_withC_est
       
       # standard errors 
       MyAnalysisResult_WLS_withC_err <- fit_WLS_withC@ParTable$se[index]
@@ -109,7 +109,7 @@ source("MIXED_all_functions_script.R")
                                                                          fact)))
       colnames(MyResult_WLS_withC_err) <- ColnamesGeneratorSE("WLS", "withC", fact)
       names(MyAnalysisResult_WLS_withC_err) <- ColnamesGeneratorSE("WLS", "withC", fact)
-      MyResult_WLS_withC_err[Replication, ] <- MyAnalysisResult_WLS_withC_err
+      MyResult_WLS_withC_err <- MyAnalysisResult_WLS_withC_err
       
       ### FITINDICES
       FI_WLS_withC <- fitMeasures(fit_WLS_withC, c("chisq","df", 
@@ -119,7 +119,7 @@ source("MIXED_all_functions_script.R")
       colnames(MyResult_WLS_withC_FI) <- c("chisq","df", 
                                            "pvalue", "cfi",
                                            "srmr")
-      MyResult_WLS_withC_FI[Replication,] <- FI_WLS_withC
+      MyResult_WLS_withC_FI <- FI_WLS_withC
     }
     
     
@@ -142,7 +142,7 @@ source("MIXED_all_functions_script.R")
       colnames(MyResult_PML_withoutC_est) <- ColnamesGeneratorEst("PML", "withoutC", fact)
       MyAnalysisResult_PML_withoutC_est <- fit_PML_withoutC@ParTable$est[index]
       names(MyAnalysisResult_PML_withoutC_est) <- ColnamesGeneratorEst("PML", "withoutC", fact)
-      MyResult_PML_withoutC_est[Replication, ] <- MyAnalysisResult_PML_withoutC_est
+      MyResult_PML_withoutC_est <- MyAnalysisResult_PML_withoutC_est
       
       # standard errors
       MyAnalysisResult_PML_withoutC_err <- fit_PML_withoutC@ParTable$se[index]
@@ -153,7 +153,7 @@ source("MIXED_all_functions_script.R")
                                                                             fact)))
       colnames(MyResult_PML_withoutC_err) <- ColnamesGeneratorSE("PML", "withoutC", fact)
       names(MyAnalysisResult_PML_withoutC_err) <- ColnamesGeneratorSE("PML", "withoutC", fact)
-      MyResult_PML_withoutC_err[Replication, ] <- MyAnalysisResult_PML_withoutC_err
+      MyResult_PML_withoutC_err <- MyAnalysisResult_PML_withoutC_err
       
       ### FITINDICES
       FI_PML_withoutC <- fitMeasures(fit_PML_withoutC, 
@@ -164,7 +164,7 @@ source("MIXED_all_functions_script.R")
       colnames(MyResult_PML_withoutC_FI) <- c("chisq.scaled", "df.scaled", 
                                               "pvalue.scaled", "cfi.scaled",
                                               "srmr")
-      MyResult_PML_withoutC_FI[Replication,] <- FI_PML_withoutC
+      MyResult_PML_withoutC_FI <- FI_PML_withoutC
     }
     
 #### PML - Model with specified cross-loadings (with silent check) #### 
@@ -185,7 +185,7 @@ source("MIXED_all_functions_script.R")
       colnames(MyResult_PML_withC_est) <- ColnamesGeneratorEst("PML", "withC", fact)
       MyAnalysisResult_PML_withC_est <- fit_PML_withC@ParTable$est[index]
       names(MyAnalysisResult_PML_withC_est) <- ColnamesGeneratorEst("PML", "withC", fact)
-      MyResult_PML_withC_est[Replication, ] <- MyAnalysisResult_PML_withC_est
+      MyResult_PML_withC_est <- MyAnalysisResult_PML_withC_est
       
       # standard errors 
       MyAnalysisResult_PML_withC_err <- fit_PML_withC@ParTable$se[index]
@@ -196,7 +196,7 @@ source("MIXED_all_functions_script.R")
                                                                          fact)))
       colnames(MyResult_PML_withC_err) <- ColnamesGeneratorSE("PML", "withC", fact)
       names(MyAnalysisResult_PML_withC_err) <- ColnamesGeneratorSE("PML", "withC", fact)
-      MyResult_PML_withC_err[Replication, ] <- MyAnalysisResult_PML_withC_err
+      MyResult_PML_withC_err <- MyAnalysisResult_PML_withC_err
       
       ### FITINDICES
       FI_PML_withC <- fitMeasures(fit_PML_withC, c("chisq.scaled","df.scaled", 
@@ -207,58 +207,59 @@ source("MIXED_all_functions_script.R")
       colnames(MyResult_PML_withC_FI) <- c("chisq.scaled", "df.scaled", 
                                            "pvalue.scaled", "cfi.scaled",
                                            "srmr")
-      MyResult_PML_withC_FI[Replication,] <- FI_PML_withC
+      MyResult_PML_withC_FI <- FI_PML_withC
     }
   
 ################################ Simulation all cells  ###############################
-  setwd("/exports/fsw/mmcstorm/Analysis/mixed")
+  setwd("/exports/fsw/mmcstorm/Analysis/mixedrep1to10")
 
   # Write output of one cell of the design
   # Save results
   
   write.csv(MyResult_WLS_withoutC_est, 
-            file = paste("WLS_withoutC_est", "Row", RowOfDesign, ".csv" , sep =""))
+            file = paste("WLS_withoutC_est", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
   
   write.csv(MyResult_WLS_withoutC_err,
-            file = paste("WLS_withoutC_err", "Row", RowOfDesign, ".csv" , sep =""))
+            file = paste("WLS_withoutC_err", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
   
   write.csv(MyResult_WLS_withoutC_FI,
-            file =paste("WLS_FI_withoutC", "Row", RowOfDesign,".csv" , sep =""))
+            file =paste("WLS_FI_withoutC", "Row", RowOfDesign,"Rep", Replication, ".csv" , sep =""))
   
   write.csv(MyResult_WLS_withC_est,
-            file = paste("WLS_withC_est", "Row", RowOfDesign, ".csv" , sep =""))
+            file = paste("WLS_withC_est", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
   
   write.csv(MyResult_WLS_withC_err,
-            file = paste("WLS_withC_err", "Row", RowOfDesign,".csv" , sep =""))
+            file = paste("WLS_withC_err", "Row", RowOfDesign,"Rep", Replication, ".csv" , sep =""))
   
   write.csv(MyResult_WLS_withC_FI,
-            file =paste("WLS_FI_withC", "Row", RowOfDesign, ".csv" , sep =""))
+            file =paste("WLS_FI_withC", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
   
   write.csv(MyResult_PML_withoutC_est,
-            file = paste("PML_withoutC_est", "Row", RowOfDesign ,".csv" , sep =""))
+            file = paste("PML_withoutC_est", "Row", RowOfDesign ,"Rep", Replication, ".csv" , sep =""))
   
   write.csv(MyResult_PML_withoutC_err,
-            file = paste("PML_withoutC_err", "Row", RowOfDesign ,".csv" , sep =""))
+            file = paste("PML_withoutC_err", "Row", RowOfDesign ,"Rep", Replication, ".csv" , sep =""))
   
   write.csv(MyResult_PML_withoutC_FI,
-            file =paste("PML_FI_withoutC", "Row", RowOfDesign,".csv" , sep =""))
+            file =paste("PML_FI_withoutC", "Row", RowOfDesign,"Rep", Replication, ".csv" , sep =""))
   
   write.csv(MyResult_PML_withC_est,
-            file = paste("PML_withC_est", "Row", RowOfDesign,".csv" , sep =""))
+            file = paste("PML_withC_est", "Row", RowOfDesign,"Rep", Replication, ".csv" , sep =""))
   
   write.csv(MyResult_PML_withC_err,
-            file = paste("PML_withC_err", "Row", RowOfDesign,".csv" , sep =""))
+            file = paste("PML_withC_err", "Row", RowOfDesign,"Rep", Replication, ".csv" , sep =""))
   
   write.csv(MyResult_PML_withC_FI,
-            file =paste("PML_FI_withC", "Row", RowOfDesign, ".csv" , sep =""))
+            file =paste("PML_FI_withC", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
   
   #save the time to run the analyses of K data sets in one cell of the design.
   time <- proc.time() - tmp
-  save(time, file =paste("Time", "Row", RowOfDesign, ".csv" , sep =""))
+  save(time, file =paste("Time", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
   
   # see whether all replications are ok
+  setwd("/exports/fsw/mmcstorm/SimData/mixed/silent_check")
   write.csv(mis500, 
-            file = paste("mis500", "Row", RowOfDesign, ".csv" , sep =""))
+            file = paste("mis500", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
   
   setwd("/exports/fsw/mmcstorm/SimData/mixed")
   # save data
