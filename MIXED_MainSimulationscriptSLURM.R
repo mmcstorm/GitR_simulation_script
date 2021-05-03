@@ -193,7 +193,7 @@ source("MIXED_all_functions_script.R")
     }
   
 ################################ Simulation all cells  ###############################
-  setwd("/exports/fsw/mmcstorm/Analysis/mixedrep1to10")
+  setwd("/exports/fsw/mmcstorm/Analysis/mixedreplication1to10")
 
   # Write output of one cell of the design
   # Save results
@@ -239,11 +239,11 @@ source("MIXED_all_functions_script.R")
   save(time, file =paste("Time", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
   
   # see whether all replications are ok
-  setwd("/exports/fsw/mmcstorm/SimData/mixed/silent_check")
+  setwd("/exports/fsw/mmcstorm/Simdata/mixed/silent_check")
   write.csv(mis500, 
             file = paste("mis500", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
   
-  setwd("/exports/fsw/mmcstorm/Simdata/mixed")
+  setwd("/exports/fsw/mmcstorm/Simdata/mixedreplication1to10")
   # save data
   write.csv(SimDat, 
             file = paste("Simulated_Data", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))

@@ -199,60 +199,59 @@ source("ORDINAL_all_functions_script.R")
                                         "srmr")
     }
     
-    
  ################################ Simulation all cells  ###############################
-setwd("/exports/fsw/mmcstorm/Analysis/ordinalREP1TO10")
+setwd("/exports/fsw/mmcstorm/Analysis/ordinalreplication1to10")
   # save the results
     write.csv(MyResult_WLS_withoutC_est, 
-              file = paste("WLS_withoutC_est", "Row", RowOfDesign, ".csv" , sep =""))
+              file = paste("WLS_withoutC_est", "Row", RowOfDesign, "Rep", Replication,".csv" , sep =""))
     
     write.csv(MyResult_WLS_withoutC_err,
-              file = paste("WLS_withoutC_err", "Row", RowOfDesign, ".csv" , sep =""))
+              file = paste("WLS_withoutC_err", "Row", RowOfDesign,"Rep", Replication,".csv" , sep =""))
     
     write.csv(MyResult_WLS_withoutC_FI,
-              file =paste("WLS_FI_withoutC", "Row", RowOfDesign,".csv" , sep =""))
+              file =paste("WLS_FI_withoutC", "Row", RowOfDesign,"Rep", Replication, ".csv" , sep =""))
     
     write.csv(MyResult_WLS_withC_est,
-              file = paste("WLS_withC_est", "Row", RowOfDesign, ".csv" , sep =""))
+              file = paste("WLS_withC_est", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
     
     write.csv(MyResult_WLS_withC_err,
-              file = paste("WLS_withC_err", "Row", RowOfDesign,".csv" , sep =""))
+              file = paste("WLS_withC_err", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
     
     write.csv(MyResult_WLS_withC_FI,
-              file =paste("WLS_FI_withC", "Row", RowOfDesign, ".csv" , sep =""))
+              file =paste("WLS_FI_withC", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
     
     write.csv(MyResult_PML_withoutC_est,
-              file = paste("PML_withoutC_est", "Row", RowOfDesign ,".csv" , sep =""))
+              file = paste("PML_withoutC_est", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
     
     write.csv(MyResult_PML_withoutC_err,
-              file = paste("PML_withoutC_err", "Row", RowOfDesign ,".csv" , sep =""))
+              file = paste("PML_withoutC_err", "Row", RowOfDesign,"Rep", Replication,".csv" , sep =""))
     
     write.csv(MyResult_PML_withoutC_FI,
-              file =paste("PML_FI_withoutC", "Row", RowOfDesign,".csv" , sep =""))
+              file =paste("PML_FI_withoutC", "Row", RowOfDesign,"Rep", Replication, ".csv" , sep =""))
     
     write.csv(MyResult_PML_withC_est,
-              file = paste("PML_withC_est", "Row", RowOfDesign,".csv" , sep =""))
+              file = paste("PML_withC_est", "Row", RowOfDesign,"Rep", Replication, ".csv" , sep =""))
     
     write.csv(MyResult_PML_withC_err,
-              file = paste("PML_withC_err", "Row", RowOfDesign,".csv" , sep =""))
+              file = paste("PML_withC_err", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
     
     write.csv(MyResult_PML_withC_FI,
-              file =paste("PML_FI_withC", "Row", RowOfDesign, ".csv" , sep =""))
+              file =paste("PML_FI_withC", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
     
     #save the time to run the analyses of K data sets in one cell of the design.
     time <- proc.time() - tmp
-    save(time, file =paste("Time", "Row", RowOfDesign, ".csv" , sep =""))
+    save(time, file =paste("Time", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
     
     # see whether all replications are ok
     setwd("/exports/fsw/mmcstorm/Simdata/ordinal/silent_check")
     write.csv(mis500, 
-              file = paste("mis500", "Row", RowOfDesign, ".csv" , sep =""))
+              file = paste("mis500", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
     
     # save data
     write.csv(SimDat, 
               file = paste("Simulated_Data", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
   
 
-setwd("/exports/fsw/mmcstorm/Simdata/ordinalREP1TO10")
+setwd("/exports/fsw/mmcstorm/Simdata/ordinalreplication1to10")
 # create folder data
 save(SimDat, file =paste("Data", "Row", RowOfDesign, "Rep", Replication ,".Rdata" , sep =""))
