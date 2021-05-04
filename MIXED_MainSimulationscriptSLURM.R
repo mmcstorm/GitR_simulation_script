@@ -9,7 +9,7 @@ Replication <- args[2]
 factors <- c(2,4,6,8) 					            #number of latent variables
 nobs <- c(200,400,800)                      #sample size
 ##Create the simulation design matrix (full factorial)
-Design_mixed <- expand.grid(factors = factors,nobs = nobs)
+Design_mixed <- expand.grid(factors = factors, nobs = nobs)
 
 #load packages
 library(lavaan)
@@ -186,7 +186,7 @@ source("MIXED_all_functions_script.R")
       FI_PML_withC <- fitMeasures(fit_PML_withC, c("chisq.scaled","df.scaled", 
                                                    "pvalue.scaled", "cfi.scaled",
                                                    "srmr"))
-      MyResult_PML_withC_FI <- matrix(NA, nrow = 1, ncol = 5)
+      MyResult_PML_withC_FI <- matrix(FI_PML_withC, nrow = 1, ncol = 5)
       colnames(MyResult_PML_withC_FI) <- c("chisq.scaled", "df.scaled", 
                                            "pvalue.scaled", "cfi.scaled",
                                            "srmr")
@@ -247,3 +247,4 @@ source("MIXED_all_functions_script.R")
   # save data
   write.csv(SimDat, 
             file = paste("Simulated_Data", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
+  
