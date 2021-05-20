@@ -8,12 +8,12 @@ MyDataGeneration <- function(factors, nobs, nvarp = 6) {
   BM <- matrix(c(.8,.8,.7,.7,.6,.6),nrow=1) #factor loadings
   r <- 0.3 # correlation between latent variables
   int <- c(0,0,0,0,0,0) # intercept
-  s <- matrix(r, factors, factors) 
+  s <- matrix(r, nrow = factors, ncol = factors) 
   diag(s) <- 1
-  
+
   # intercepts of the items
   int2 <- rep(int,factors)
-  
+ 
   # b is the loadingsmatrix > transposed matrix version
   b <- t(kronecker(diag(factors), BM)) # kronecker computes product of two arrays 
 
@@ -23,7 +23,7 @@ MyDataGeneration <- function(factors, nobs, nvarp = 6) {
   
   xy.mis <- cbind(x.mis, y.mis)
   b[xy.mis] <- .2
-  
+
   #compute error values (theta matrix)
   ev <- diag(1 - diag(b %*% s %*% t(b)))
   
@@ -32,7 +32,7 @@ MyDataGeneration <- function(factors, nobs, nvarp = 6) {
   
   #simulate data from a Multivariate Normal Distribution
   x <- data.frame(MASS:::mvrnorm(n = nobs, mu = int2, Sigma = SIGMA))
-  
+
   item.cutpoints <- 
     matrix(c(rep(-1.20,nvar),rep(0,nvar),
              rep(1.20,nvar)), ncol=nvar, byrow=TRUE)
@@ -60,7 +60,7 @@ MyDataGeneration <- function(factors, nobs, nvarp = 6) {
 }
 
 # test function
-
+MyDataGeneration(4, nobs = 200, nvarp = 6)
 
 #create indexes for ordinal and continuous
 indexes_con <- function(fact){

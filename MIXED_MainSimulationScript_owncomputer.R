@@ -99,7 +99,7 @@ MySimulationCell<- function(Design_mixed = Design_mixed, RowOfDesign, K){
     fit_WLS_withoutC <- try(cfa( model <- model_withoutC(fact), 
                                  data=SimDat, std.lv=TRUE, 
                                  ordered = colnames(SimDat[indexes_ord(fact)]),
-                                 estimator="WLS"),silent=TRUE)
+                                 estimator="WLSMV"),silent=TRUE)
     if(inherits(fit_WLS_withoutC, "try-error")) {
       mis500[k,1] <- 1        
     } else { 
@@ -127,7 +127,7 @@ MySimulationCell<- function(Design_mixed = Design_mixed, RowOfDesign, K){
     fit_WLS_withC <- try(cfa( model <- model_withC(fact), 
                               data=SimDat, std.lv=TRUE, 
                               ordered = colnames(SimDat[indexes_ord(fact)]),
-                              estimator="WLS"),silent=TRUE)
+                              estimator="WLSMV"),silent=TRUE)
     if(inherits(fit_WLS_withC, "try-error")) {
       mis500[k,2] <- 1        
     } else {
