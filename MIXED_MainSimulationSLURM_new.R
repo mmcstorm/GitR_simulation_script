@@ -65,7 +65,6 @@ if(inherits(fit_WLS_withoutC, "try-error")) {
                                                                          "withoutC",
                                                                          fact)))
   colnames(MyResult_WLS_withoutC_est) <- ColnamesGeneratorEst("WLS", "withoutC", fact)
-  MyResult_WLS_withoutC_FI<- matrix(FI_WLS_withoutC, nrow = 1, ncol = 5)
   # standard errors
   MyAnalysisResult_WLS_withoutC_err <- fit_WLS_withoutC@ParTable$se[index]
   MyResult_WLS_withoutC_err <- matrix(MyAnalysisResult_WLS_withoutC_err, 
