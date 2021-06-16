@@ -1,3 +1,5 @@
+#################### LET OP: Dit script bevat andere mis500 variabelen!! Zie meeting Mariska 14-06-2021
+
 # MainSimulationScriptSLURM (following the code of the manual)
 args <- commandArgs(TRUE) #SLURM command
 args <- as.numeric(args)
@@ -6,7 +8,7 @@ RowOfDesign <- args[1]
 Replication <- args[2]
 
 ############################# Simulation Design  #############################
-factors <- c(2,4,6,8) 					            #number of latent variables
+factors <- c(2,4,6,8)					             #number of latent variables
 nobs <- c(200,400,800)                      #sample size
 ##Create the simulation design matrix (full factorial)
 Design_mixed <- expand.grid(factors = factors, nobs = nobs)
@@ -19,15 +21,17 @@ library(usethis)
 source("MIXED_all_functions_script.R")
 
 ################################ Simulation start (1 cell) ##########################
-
 # initialize values
 tmp <- proc.time()
 nvarp <- 6
 fact <- Design_mixed[RowOfDesign,1]
 nvar <- nvarp*fact
 
-input<- cbind(seq(1,550), rep(0,550))
-mis500<- as.matrix(input)
+input<- cbind(1, 0)
+mis_W_withoutC <- as.matrix(input)
+mis_W_withC <- as.matrix(input)
+mis_P_withoutC <- as.matrix(input)
+mis_P_withC <- as.matrix(input)
 
 # Generate data
 # set a random number seed to be able to replicate the result exactly
@@ -41,7 +45,7 @@ fit_WLS_withoutC <- try(cfa( model <- model_withoutC(fact),
                              ordered = colnames(SimDat[indexes_ord(fact)]),
                              estimator="WLSMV"),silent=TRUE)
 if(inherits(fit_WLS_withoutC, "try-error")) {
-  mis500[1,2] <- 1
+  mis_W_withoutC[1,2] <- 1
   MyResult_WLS_withoutC_est <- matrix(NA,
                                       nrow = 1,
                                       ncol = length(ColnamesGeneratorEst("WLS",
@@ -93,7 +97,7 @@ fit_WLS_withC <- try(cfa( model <- model_withC(fact),
                           ordered = colnames(SimDat[indexes_ord(fact)]),
                           estimator="WLSMV"),silent=TRUE)
 if(inherits(fit_WLS_withC, "try-error")) {
-  mis500[1,2] <- 1
+  mis_W_withC[1,2] <- 1
   MyResult_WLS_withC_est <- matrix(NA,
                                       nrow = 1,
                                       ncol = length(ColnamesGeneratorEst("WLS",
@@ -141,7 +145,7 @@ fit_PML_withoutC <- try(cfa( model <- model_withoutC(fact),
                              ordered = colnames(SimDat[indexes_ord(fact)]),
                              estimator="PML"),silent=TRUE)
 if(inherits(fit_PML_withoutC, "try-error")) {
-  mis500[1,2] <- 1
+  mis_P_withoutC[1,2] <- 1
   MyResult_PML_withoutC_est <- matrix(NA, 
                                       nrow = 1, 
                                       ncol = length(ColnamesGeneratorEst("PML", 
@@ -191,7 +195,7 @@ fit_PML_withC <- try(cfa( model <- model_withC(fact),
                           ordered = colnames(SimDat[indexes_ord(fact)]),
                           estimator="PML"),silent=TRUE)
 if(inherits(fit_PML_withC, "try-error")) {
-  mis500[1,2] <- 1
+  mis_P_withC[1,2] <- 1
   MyResult_PML_withC_est <- matrix(MyAnalysisResult_PML_withC_est, 
                                    nrow = 1, 
                                    ncol = length(ColnamesGeneratorEst("PML", 
@@ -234,7 +238,7 @@ if(inherits(fit_PML_withC, "try-error")) {
 }
 
 ################################ Simulation all cells  ###############################
-setwd("/exports/fsw/mmcstorm/Analysis/mixedreplication1to10")
+setwd("/exports/fsw/mmcstorm/Analysis/testmixed")
 
 # Write output of one cell of the design
 # Save results
@@ -281,8 +285,17 @@ save(time, file =paste("Time", "Row", RowOfDesign, "Rep", Replication, ".csv" , 
 
 # see whether all replications are ok
 setwd("/exports/fsw/mmcstorm/Simdata/mixed/silent_check")
-write.csv(mis500, 
-          file = paste("mis500", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
+write.csv(mis_W_withoutC, 
+          file = paste("mis_W_withoutC", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
+
+write.csv(mis_W_withC, 
+          file = paste("mis_W_withC", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
+
+write.csv(mis_P_withoutC, 
+          file = paste("mis_P_withoutC", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
+
+write.csv(mis_P_withC, 
+          file = paste("mis_P_withC", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
 
 setwd("/exports/fsw/mmcstorm/Simdata/mixedreplication1to10")
 # save data
