@@ -238,7 +238,7 @@ if(inherits(fit_PML_withC, "try-error")) {
 }
 
 ################################ Simulation all cells  ###############################
-setwd("/exports/fsw/mmcstorm/Analysis/testmixed")
+setwd("/exports/fsw/mmcstorm/Analysis/finalmixedrep151to175")
 
 # Write output of one cell of the design
 # Save results
@@ -280,8 +280,8 @@ write.csv(MyResult_PML_withC_FI,
           file =paste("PML_FI_withC", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
 
 #save the time to run the analyses of K data sets in one cell of the design.
-time <- proc.time() - tmp
-save(time, file =paste("Time", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
+#time <- proc.time() - tmp
+#save(time, file =paste("Time", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
 
 # see whether all replications are ok
 setwd("/exports/fsw/mmcstorm/Simdata/mixed/silent_check")
@@ -297,7 +297,7 @@ write.csv(mis_P_withoutC,
 write.csv(mis_P_withC, 
           file = paste("mis_P_withC", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
 
-setwd("/exports/fsw/mmcstorm/Simdata/mixedreplication1to10")
+setwd("/exports/fsw/mmcstorm/Simdata/mixed")
 # save data
 write.csv(SimDat, 
           file = paste("Simulated_Data", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))

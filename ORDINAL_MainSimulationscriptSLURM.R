@@ -200,7 +200,7 @@ source("ORDINAL_all_functions_script.R")
     }
     
  ################################ Simulation all cells  ###############################
-setwd("/exports/fsw/mmcstorm/Analysis/ordinalreplication1to10")
+setwd("/exports/fsw/mmcstorm/Analysis/R20ordinal1to800")
   # save the results
     write.csv(MyResult_WLS_withoutC_est, 
               file = paste("WLS_withoutC_est", "Row", RowOfDesign, "Rep", Replication,".csv" , sep =""))
@@ -236,14 +236,14 @@ setwd("/exports/fsw/mmcstorm/Analysis/ordinalreplication1to10")
               file = paste("PML_withC_err", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
     
     write.csv(MyResult_PML_withC_FI,
-              file =paste("PML_FI_withC", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
+              file = paste("PML_FI_withC", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
     
     #save the time to run the analyses of K data sets in one cell of the design.
     time <- proc.time() - tmp
     save(time, file =paste("Time", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
     
     # see whether all replications are ok
-    setwd("/exports/fsw/mmcstorm/Simdata/ordinal/silent_check")
+    setwd("/exports/fsw/mmcstorm/Simdata/silent_check")
     write.csv(mis500, 
               file = paste("mis500", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
     
@@ -252,6 +252,6 @@ setwd("/exports/fsw/mmcstorm/Analysis/ordinalreplication1to10")
               file = paste("Simulated_Data", "Row", RowOfDesign, "Rep", Replication, ".csv" , sep =""))
   
 
-setwd("/exports/fsw/mmcstorm/Simdata/ordinalreplication1to10")
+setwd("/exports/fsw/mmcstorm/Simdata/ordinal")
 # create folder data
 save(SimDat, file =paste("Data", "Row", RowOfDesign, "Rep", Replication ,".Rdata" , sep =""))
